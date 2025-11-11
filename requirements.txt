@@ -1,0 +1,23 @@
+# F1 Data Analysis & Dashboard Requirements
+# ==========================================
+
+# Core F1 Data
+fastf1>=3.6.0
+ergast-py>=1.0.0
+
+# Data Processing
+pandas>=2.2.0
+numpy>=1.26.0
+
+# Visualization
+plotly>=5.18.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+kaleido>=0.2.1
+
+# Dashboard Framework
+streamlit>=1.31.0
+
+# Additional Utilities
+requests>=2.31.0
+python-dateutil>=2.8.2
