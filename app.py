@@ -27,45 +27,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
-st.markdown("""
-<style>
-    .main-header {
-        font-size: 3rem;
-        font-weight: bold;
-        color: #E10600;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .sub-header {
-        font-size: 1.5rem;
-        color: #15151E;
-        text-align: center;
-        margin-bottom: 3rem;
-    }
-    .stButton>button {
-        background-color: #E10600;
-        color: white;
-        font-weight: bold;
-        border-radius: 8px;
-        padding: 0.5rem 2rem;
-    }
-    .stButton>button:hover {
-        background-color: #B00500;
-    }
-    .feature-card {
-        background-color: #f8f9fa;
-        padding: 1.5rem;
-        border-radius: 10px;
-        border-left: 4px solid #E10600;
-        margin-bottom: 1rem;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-# Main header
-st.markdown('<div class="main-header">🏎️ F1 Data Analysis Dashboard</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-header">Powered by FastF1 & Streamlit</div>', unsafe_allow_html=True)
+st.title("🏎️ F1 Data Analysis Dashboard")
 
 # Welcome message
 st.markdown("---")
@@ -99,12 +61,12 @@ with col1:
     - Lap-by-lap position tracking
     """)
     
-    st.info("**🏁 Lap Time Comparison**")
+    st.info("**🔴 Live Race Tracking**")
     st.markdown("""
-    - Compare lap times between drivers
-    - Identify fastest laps
-    - Analyze sector times
-    - Tire compound performance
+    - Real-time session updates
+    - Live lap times and positions
+    - Position change tracking
+    - Auto-refresh every 30 seconds
     """)
 
 with col2:
@@ -116,13 +78,21 @@ with col2:
     - Driver comparison overlays
     """)
     
-    st.info("**📈 Tire Strategy**")
+    st.info("**📰 F1 News Feed**")
     st.markdown("""
-    - Visualize pit stop strategies
-    - Tire compound usage analysis
-    - Tire life and degradation
-    - Strategy comparison
+    - Latest F1 news articles
+    - Multiple news sources
+    - Search and filter
+    - Updated every 10 minutes
     """)
+
+st.info("**📈 Tire Strategy**")
+st.markdown("""
+- Visualize pit stop strategies
+- Tire compound usage analysis
+- Tire life and degradation
+- Strategy comparison
+""")
 
 st.markdown("---")
 

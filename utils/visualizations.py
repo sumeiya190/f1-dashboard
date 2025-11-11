@@ -318,28 +318,68 @@ def create_position_chart(laps_df: pd.DataFrame, drivers: Optional[List[str]] = 
     """
     fig = go.Figure()
     
+    # Check if required columns exist
     if 'Position' not in laps_df.columns or 'LapNumber' not in laps_df.columns:
+        fig.add_annotation(
+            text="Position data not available",
+            xref="paper", yref="paper",
+            x=0.5, y=0.5, showarrow=False,
+            font=dict(size=16)
+        )
         return fig
     
-    all_drivers = laps_df['Driver'].unique()
+    # Filter out rows with NaN positions
+    laps_with_pos = laps_df[laps_df['Position'].notna()].copy()
+    
+    if laps_with_pos.empty:
+        fig.add_annotation(
+            text="No position data available",
+            xref="paper", yref="paper",
+            x=0.5, y=0.5, showarrow=False,
+            font=dict(size=16)
+        )
+        return fig
+    
+    all_drivers = laps_with_pos['Driver'].unique()
     drivers_to_plot = drivers if drivers else all_drivers
     
+    # Get team colors
+    team_colors = {
+        'Red Bull Racing': '#3671C6',
+        'Mercedes': '#27F4D2',
+        'Ferrari': '#E8002D',
+        'McLaren': '#FF8000',
+        'Aston Martin': '#229971',
+        'Alpine': '#FF87BC',
+        'Williams': '#64C4FF',
+        'RB': '#6692FF',
+        'Kick Sauber': '#52E252',
+        'Haas F1 Team': '#B6BABD'
+    }
+    
     for driver in drivers_to_plot:
-        driver_data = laps_df[laps_df['Driver'] == driver]
+        driver_data = laps_with_pos[laps_with_pos['Driver'] == driver].copy()
         
         if driver_data.empty:
             continue
         
-        color = driver_data['TeamColor'].iloc[0] if 'TeamColor' in driver_data.columns else None
-        if color and not color.startswith('#'):
-            color = f'#{color}'
+        # Get team color
+        color = None
+        if 'Team' in driver_data.columns:
+            team_name = driver_data['Team'].iloc[0]
+            color = team_colors.get(team_name, None)
+        
+        if not color and 'TeamColor' in driver_data.columns:
+            color = driver_data['TeamColor'].iloc[0]
+            if color and not color.startswith('#'):
+                color = f'#{color}'
         
         fig.add_trace(go.Scatter(
             x=driver_data['LapNumber'],
             y=driver_data['Position'],
             mode='lines+markers',
             name=driver,
-            line=dict(color=color, width=2),
+            line=dict(color=color, width=2) if color else dict(width=2),
             marker=dict(size=6),
             hovertemplate=f'<b>{driver}</b><br>Lap: %{{x}}<br>Position: %{{y}}<extra></extra>'
         ))
@@ -350,7 +390,7 @@ def create_position_chart(laps_df: pd.DataFrame, drivers: Optional[List[str]] = 
         yaxis_title="Position",
         yaxis=dict(autorange='reversed'),  # Position 1 at top
         hovermode='x unified',
-        template='plotly_white',
+        template='plotly_dark',
         height=500
     )
     
